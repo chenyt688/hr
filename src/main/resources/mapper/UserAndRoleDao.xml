@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.hr.business.dao.UserAndRoleDao">
+    <resultMap id="userAndRoleMap" type="com.neuedu.hr.business.entity.UserAndRole">
+        <id column="user_code" property="user_code"/>
+        <result column="role_code" property="role_code"/>
+        <result column="own" property="own"/>
+
+    </resultMap>
+
+    <insert id="insertUserandRole" >
+        insert into hr_users_roles(user_code, role_code, own)
+        values (#{user_code},#{role_code},'1')
+    </insert>
+
+
+</mapper>

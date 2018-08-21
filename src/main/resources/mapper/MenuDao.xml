@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.hr.business.dao.MenuDao">
+<resultMap id="menuMap" type="com.neuedu.hr.business.entity.Menu">
+    <id column="menu_id" property="menu_id"/>
+    <result column="menu_name" property="menu_name"/>
+    <result column="menu_code" property="menu_code"/>
+    <result column="menu_url" property="menu_url"/>
+    <result column="del_flag" property="del_flag"/>
+
+</resultMap>
+
+    <select id="getAllMenu" resultMap="menuMap">
+        select * from hr_menus;
+   </select>
+
+</mapper>

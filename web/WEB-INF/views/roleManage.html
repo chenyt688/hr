@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>角色管理</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <!-- VENDOR CSS -->
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/vendor/linearicons/style.css">
+    <link rel="stylesheet" href="../assets/vendor/chartist/css/chartist-custom.css">
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+    <link rel="stylesheet" href="../assets/css/demo.css">
+    <!-- ICONS -->
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../assets/img/favicon.png">
+</head>
+<body>
+<script>
+    function update(obj) {/*点击修改按钮，给模态框加载信息并且弹出模态框*/
+        myModalLabel1.style.display = 'none';
+        myModalLabel2.style.display = 'block';
+        $('#myModal').modal({
+            show: true
+        })
+    }
+
+    function changeTitle() {
+        myModalLabel1.style.display = 'block';
+        myModalLabel2.style.display = 'none';
+        $("#judgeway").val("insert");
+        $('#myModal').modal({
+            show: true
+        })
+    }
+</script>
+<div id="wrapper">
+    <div class="main">
+        <center><h3>角色信息</h3></center>
+        <div class="main-content">
+            <form method="post" th:action="@{/role/queryRole}" name="form1">
+                <div class="col-md-12" style="float: right">
+                    <div class="col-md-2"><input type="text" class="form-control" placeholder="角色标识查找" name="rolecode">
+                    </div>
+                    <div class="col-md-2"><input type="text" class="form-control" placeholder="角色名查找" name="rolename">
+                    </div>
+                    <span class="col-md-1"></span>
+                    <a href="javascript:form1.action='../../role/queryRole';form1.submit()" class="col-md-2">查询</a>
+                    <a data-toggle="modal" onclick="changeTitle()" class="col-md-2">添加</a>
+                </div>
+                <br><br>
+                <hr>
+                <table class="table table-striped">
+                    <tr align="center">
+                        <td class="col-md-2"><b>序号</b></td>
+                        <td class="col-md-2"><b>角色标识符</b></td>
+                        <td class="col-md-2"><b>角色名称</b></td>
+                        <td class="col-md-3"><b>拥有界面权限</b></td>
+                        <td class="col-md-3"><b>操作</b></td>
+                    </tr>
+                    <tr th:each="r,roleStat:${roleList}" align="center">
+                        <td th:text="${roleStat.index +1}"></td>
+                        <td th:text="${r.role_code}"></td>
+                        <td th:text="${r.role_name}"></td>
+                        <td>
+                            <sp th:each="menu:${r.menuList}" th:text="${menu.menu_name}"
+                                th:value="${menu.menu_code}"></sp>
+                        </td>
+                        <td>
+                            <a class="btn btn-danger btn-xs btn " data-toggle="modal" onclick="update(this)">修改</a>
+                            <a class="btn btn-danger btn-xs btn " th:href="@{/role/deleteRole(lable = ${r.role_code})}">删除</a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+
+            <!-- 模态框（Modal） -->
+            <form th:action="@{/role/insertRole}" method="post">
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel1">角色信息添加</h4>
+                                <h4 class="modal-title" id="myModalLabel2" style="display: none">角色信息修改</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+
+                                    <label class="col-sm-2 control-label">角色标识:</label>
+                                    <div class="col-sm-4 ">
+                                        <input type="text" name="inputrolecode" class="form-control"
+                                               placeholder="请输入角色标识符"
+                                               id="r_code">
+                                    </div>
+
+                                    <label class="col-sm-2 control-label">角色名称:</label>
+                                    <div class="col-sm-4 ">
+                                        <input type="text" name="inputrolename" class="form-control"
+                                               placeholder="请输入角色名称" id="roles_name">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <label class="col-sm-2 control-label">权限</label>
+                                    <div class="col-sm- 4">
+                                        <input type="checkbox" id="menuvalue" th:name="menuvalue"
+                                               th:each="m:${menuList}" th:value="${m.menu_code}"
+                                               th:text="${m.menu_name}">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <input type="hidden" name="judgelable" value="addRole">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+<script src="../assets/vendor/jquery/jquery.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="../assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../assets/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js"></script>
+<script src="../assets/vendor/chartist/js/chartist.min.js"></script>
+<script src="../assets/scripts/klorofil-common.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+/*var arrayContentTcode = new Array();
+       <%--<c:forEach items="${talentList}" var="t">
+            arrayContentTcode.push("${t.t_code}");
+        </c:forEach>
+        var arrayContentName = new Array();
+        <c:forEach items="${talentList}" var="t">
+            arrayContentName.push("${t.name}");
+        </c:forEach>
+        var arrayContentSexual = new Array();
+        <c:forEach items="${talentList}" var="t">
+            arrayContentSexual.push("${t.sexual}");
+        </c:forEach>
+        var arrayContentStatue = new Array();
+        <c:forEach items="${talentList}" var="t">
+             arrayContentStatue.push("${t.statue}");
+        </c:forEach>
+        var arrayContentIdCard = new Array();
+        <c:forEach items="${talentList}" var="t">
+            arrayContentIdCard.push("${t.id_card}");
+        </c:forEach>--%>
+        var temp = 1;
+        if(endindex -startindex + 1 ==rownumber){
+            for(var tempi =startindex;tempi<=endindex;tempi++ ){
+                $("table").find("tr").eq(temp).children().eq(0).text(tempi + 1);
+                $("table").find("tr").eq(temp).children().eq(1).text(arrayContentTcode[tempi]);
+                $("table").find("tr").eq(temp).children().eq(2).text(arrayContentName[tempi]);
+                if(arrayContentSexual[tempi] == 0){
+                    $("table").find("tr").eq(temp).children().eq(3).text('男');
+                }else{
+                    $("table").find("tr").eq(temp).children().eq(3).text('女');
+                }
+                if(arrayContentStatue[tempi] == 0){
+                    $("table").find("tr").eq(temp).children().eq(4).text('在职');
+                }else if(arrayContentStatue[tempi] == 1){
+                    $("table").find("tr").eq(temp).children().eq(4).text('离职');
+                }else{
+                    $("table").find("tr").eq(temp).children().eq(4).text('退休');
+                }
+                $("table").find("tr").eq(temp).children().eq(5).text(arrayContentIdCard[tempi]);
+                temp = temp+1;
+            }
+        }else{
+            for(var tempi =startindex;tempi<=endindex;tempi++ ){
+                $("table").find("tr").eq(temp).children().eq(0).text(tempi + 1);
+                $("table").find("tr").eq(temp).children().eq(1).text(arrayContentTcode[tempi]);
+                $("table").find("tr").eq(temp).children().eq(2).text(arrayContentName[tempi]);
+                if(arrayContentSexual[tempi] == 0){
+                    $("table").find("tr").eq(temp).children().eq(3).text('男');
+                }else{
+                    $("table").find("tr").eq(temp).children().eq(3).text('女');
+                }
+                if(arrayContentStatue[tempi] == 0){
+                    $("table").find("tr").eq(temp).children().eq(4).text('在职');
+                }else if(arrayContentStatue[tempi] == 1){
+                    $("table").find("tr").eq(temp).children().eq(4).text('离职');
+                }else{
+                    $("table").find("tr").eq(temp).children().eq(4).text('退休');
+                }
+                $("table").find("tr").eq(temp).children().eq(5).text(arrayContentIdCard[tempi]);
+                temp = temp+1;
+            }
+            var tempIndex = rownumber -1-(endindex - startindex);
+            for(var j = 1;j <= tempIndex;j++){
+                $("table").find("tr").eq(temp).hide();
+                temp = temp+1;
+            }
+
+        }*/

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>用户管理</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <!-- VENDOR CSS -->
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/vendor/linearicons/style.css">
+    <link rel="stylesheet" href="../assets/vendor/chartist/css/chartist-custom.css">
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+    <link rel="stylesheet" href="../assets/css/demo.css">
+    <!-- ICONS -->
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../assets/img/favicon.png">
+
+    <script>
+        function update(obj) {/*点击修改按钮，给模态框加载信息并且弹出模态框*/
+            myModalLabel1.style.display = 'none';
+            myModalLabel2.style.display = 'block';
+            $("#judgeway").val("update");
+            var tds = $(obj).parent().parent().find('td');
+            $("#user_code").val(tds.eq(0).text());
+            $("#user_name").val(tds.eq(1).text());
+            if (tds.eq(2) == "女") {
+                $("#user_sexual").val(1);
+            }else if(tds.eq(2) == "男") {
+                $("#user_sexual").val(0);
+            }
+            $("#user_phone").val(tds.eq(4).text());
+            $('#myModal').modal({
+                show : true
+            })
+        }
+        function changeTitle() {
+            myModalLabel1.style.display = 'block';
+            myModalLabel2.style.display = 'none';
+            $("#judgeway").val("insert");
+            $('#myModal').modal({
+                show : true
+            })
+        }
+    </script>
+
+</head>
+<div id="wrapper">
+    <div class="main">
+        <center><h3>用户信息</h3></center>
+        <div class="main-content" >
+            <form method="post" th:action="@{/user/queryUser}" name="form1" id="form1" >
+                <div class="col-md-12">
+                    <div class="col-md-2"><input type="text" class="form-control" placeholder="编号查找" name="usercode"></div>
+                    <div class="col-md-2"><input type="text" class="form-control" placeholder="用户名查找" name="username"></div>
+                    <div class="col-md-2"><input type="text" class="form-control" placeholder="角色查找" name="rolecode"></div>
+                    <span class="col-md-1"></span>
+                    <a href="javascript:form1.action='../../user/queryUser';form1.submit()" class="col-md-2">查询</a>
+                    <a data-toggle="modal"  class="col-md-2" onclick="changeTitle()">添加</a>
+                </div>
+                <br><br>
+                <hr>
+                <table  class="table table-striped">
+                    <tr align="center" >
+                        <td class="col-md-2"><b>编号</b></td>
+                        <td class="col-md-2"><b>用户名</b></td>
+                        <td class="col-md-2"><b>性别</b></td>
+                        <td class="col-md-2"><b>角色</b></td>
+                        <td class="col-md-2"><b>电话</b></td>
+                        <td class="col-md-2"><b>操作</b></td>
+                    </tr>
+                    <tr th:each="u:${userList}" align="center">
+                        <td th:text="${u.user_code}"></td>
+                        <td th:text="${u.user_name}"></td>
+                        <td th:switch="${u.user_sexual}">
+                            <span th:case="'0'">男</span>
+                            <span th:case="'1'">女</span>
+                        </td>
+                        <td >
+                            <sp th:each="r:${u.roleList}" th:text = "${r.role_name }"></sp>
+                        </td>
+                        <td th:text="${u.user_phone}"></td>
+                        <td>
+                            <a  class="btn btn-danger btn-xs btn " data-toggle="modal"  onclick="update(this)">修改</a>
+                            <a  class="btn btn-danger btn-xs btn " th:href="@{/user/deleteUser(lable = ${u.user_code})}">删除</a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+
+
+            <!-- 模态框（Modal） -->
+            <form th:action="@{/user/insertUser}" method="post" id="form2">
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel1">用户信息添加</h4>
+                                <h4 class="modal-title" id="myModalLabel2" style="display: none">用户信息修改</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label">用户编号:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text"  class="form-control"  name="user_code" id="user_code">
+                                    </div>
+                                    <label class="col-sm-2 control-label">用户名:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text"  class="form-control"  name="user_name" id="user_name">
+                                    </div>
+                                </div>
+                                <br>
+
+                                <div class="row">
+                                    <label class="col-sm-2 control-label">密码:</label>
+                                    <div class="col-sm-4 ">
+                                        <input type="text"  class="form-control" placeholder="" name="password" value="111" id="password">
+                                    </div>
+                                    <label class="col-sm-2 control-label">性别:</label>
+                                    <div class="col-sm-4 ">
+                                        <select name="user_sexual" class="form-control" id="user_sexual">
+                                            <option value="0">男</option>
+                                            <option value="1">女</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+
+                                <div class="row">
+                                    <label class="col-sm-2 control-label">电话:</label>
+                                    <div class="col-sm-4 ">
+                                        <input type="text"  class="form-control" placeholder="" name="user_phone"  id="user_phone">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <label class="col-sm-2 control-label">角色</label>
+                                    <div class="col-sm- 4">
+                                        <input type="checkbox" id="rolevalue" th:name="rolevalue" th:each="r:${session.roleListInfo}" th:value="${r.role_code}" th:text="${r.role_name}">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <!--<select  name="role_code" class="form-control">
+                                            <option selected disabled>请选择用户类型</option>
+                                            <option th:each="r:${session.roleListInfo}" th:value="${r.role_code}" th:text="${r.role_name}"></option>
+                                        </select>-->
+                                    </div>
+                                </div>
+                                <br>
+
+                                <br>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <input type="hidden" name="judgelable" value="insert">
+                                <button type="submit" class="btn btn-primary" >提交</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+<script src="../assets/vendor/jquery/jquery.min.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="../assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../assets/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js"></script>
+<script src="../assets/vendor/chartist/js/chartist.min.js"></script>
+<script src="../assets/scripts/klorofil-common.js"></script>
+</body>
+</html>
